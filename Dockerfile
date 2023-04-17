@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 RUN apt-get update -y \ 
- && apt-get install -y jq git curl ca-certificates pip3 \
+ && apt-get install -y jq git curl ca-certificates python pip3 \
  && update-ca-certificates 
 RUN pip3 install awscli
 RUN curl -L https://carvel.dev/install.sh | bash
