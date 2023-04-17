@@ -8,3 +8,4 @@ RUN curl -L https://github.com/pivotal-cf/pivnet-cli/releases/download/v3.0.1/pi
  && chmod +x /usr/local/bin/pivnet 
 RUN curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" > /usr/local/bin/kubectl \
  && chmod +x /usr/local/bin/kubectl
+
