@@ -6,7 +6,8 @@ FROM ubuntu:${UBUNTU_CODENAME}
 
 # Update system and install common utilities
 RUN apt-get update -q && \
-    apt-get install -yq curl apt-transport-https ca-certificates gnupg unzip git jq sudo && \
+    apt-get install -yq curl apt-transport-https ca-certificates gnupg unzip git jq sudo \
+    python3 python3-pip && \
     update-ca-certificates
 
 # Install direnv
@@ -37,7 +38,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 
 # Install Azure CLI
 RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/microsoft.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture)] https://packages.microsoft.com/repos/azure-cli/ ${UBUNTU_CODENAME} main" > \
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ ${UBUNTU_CODENAME} main" > \
     /etc/apt/sources.list.d/azure-cli.list && \
     apt-get update -q && \
     apt-get install -yq azure-cli
