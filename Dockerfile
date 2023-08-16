@@ -1,49 +1,37 @@
+# Use Ubuntu 22.04 as the base image
 FROM ubuntu:22.04
 
-RUN apt-get update -y && apt-get install -y \
-  jq \
-  git \
-  curl \
-  a-certificates \
-  python3 python3-pip \
-  direnv  \
-  apt-transport-https \
-  gnupg \
-  sudo \
- && update-ca-certificates 
+# Update system and install common dependencies, and update CA certificates
+RUN apt-get update -q \
+    && apt-get install -yq curl apt-transport-https ca-certificates gnupg unzip \
+    && update-ca-certificates
 
-#
-# Configure direnv 
-#
-RUN echo 'eval "$(direnv hook bash)"' >> ~/.bashrc 
+# Install direnv
+RUN apt-get install -yq direnv \
+    && echo 'eval "$(direnv hook bash)"' >> /etc/bash.bashrc
 
-#
-# install aws cli 
-# 
-RUN pip3 install awscli
-
-#
-# Install carvel tools
-# 
+# Install Carvel
 RUN curl -L https://carvel.dev/install.sh | bash
 
-#
-# Install pivnet cli
-#
-RUN curl -L https://github.com/pivotal-cf/pivnet-cli/releases/download/v3.0.1/pivnet-linux-amd64-3.0.1 > /usr/local/bin/pivnet \
- && chmod +x /usr/local/bin/pivnet 
-
-#
 # Install kubectl
-#
-RUN curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" > /usr/local/bin/kubectl \
- && chmod +x /usr/local/bin/kubectl
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+    && chmod +x kubectl \
+    && mv kubectl /usr/local/bin/kubectl
 
-# 
-# Install gcloud cli 
-# 
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-cli -y
-      
-# RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-# RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
-# RUN curl https://sdk.cloud.google.com | bash 
+# Argument for PivNet CLI version
+ARG PIVNET_VERSION=3.0.0
+
+# Install PivNet CLI using the specified version
+RUN curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNET_VERSION}/pivnet-linux-amd64-${PIVNET_VERSION} \
+    && chmod +x pivnet-linux-amd64-${PIVNET_VERSION} \
+    && mv pivnet-linux-amd64-${PIVNET_VERSION} /usr/local/bin/pivnet
+
+# Install Google Cloud SDK
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
+    && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
+    && apt-get update -q \
+    && apt-get install -yq google-cloud-sdk
+
+# Clean up
+RUN apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
