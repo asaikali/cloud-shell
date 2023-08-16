@@ -4,8 +4,7 @@ ARG UBUNTU_CODENAME=jammy
 # PivNet CLI version
 ARG PIVNET_VERSION=3.0.0
 
-# Specify Teller version as an argument
-ARG TELLER_VERSION=1.5.6
+
 
 # Use specified Ubuntu codename as the base image
 FROM ubuntu:${UBUNTU_CODENAME}
@@ -18,6 +17,8 @@ RUN apt-get update -q && \
 
 
 # Install Teller Secrets Manager from a specific GitHub release\
+# Specify Teller version as an argument
+ARG TELLER_VERSION=1.5.6
 RUN echo https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz
 RUN curl -v -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz -o teller-linux-amd64.tar.gz 
 RUN ls -lah
