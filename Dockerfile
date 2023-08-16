@@ -1,41 +1,24 @@
 # Ubuntu codename (22.04 - Jammy)
 ARG UBUNTU_CODENAME=jammy
 
+# PivNet CLI version
+ARG PIVNET_VERSION=3.0.0
+
+# Specify Teller version as an argument
+ARG TELLER_VERSION=1.5.6
+
 # Use specified Ubuntu codename as the base image
 FROM ubuntu:${UBUNTU_CODENAME}
 
 # Update system and install common utilities
 RUN apt-get update -q && \
-    apt-get install -yq curl apt-transport-https ca-certificates gnupg unzip \
-    git jq sudo lsb-release python3 python3-pip && \
+    apt-get install -yq curl apt-transport-https ca-certificates gnupg unzip git jq sudo lsb-release \
+    python3 python3-pip && \
     update-ca-certificates
 
 # Install direnv
 RUN apt-get install -yq direnv && \
     echo 'eval "$(direnv hook bash)"' >> /etc/bash.bashrc
-
-# Install Carvel
-RUN curl -L https://carvel.dev/install.sh | bash
-
-# Install kubectl and alias it to k
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-    chmod +x kubectl && \
-    mv kubectl /usr/local/bin/kubectl && \
-    echo 'alias k="kubectl"' >> /etc/bash.bashrc
-
-# Argument for PivNet CLI version
-ARG PIVNET_VERSION=3.0.0
-
-# Install PivNet CLI using the specified version
-RUN curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNET_VERSION}/pivnet-linux-amd64-${PIVNET_VERSION} && \
-    chmod +x pivnet-linux-amd64-${PIVNET_VERSION} && \
-    mv pivnet-linux-amd64-${PIVNET_VERSION} /usr/local/bin/pivnet
-
-# Install tanzu cli 
-RUN curl -fsSL https://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-os-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list && \
-     apt-get update -q && \
-    apt-get install -yq tanzu-cli
 
 # Install Google Cloud SDK
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | \
@@ -43,7 +26,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
     gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \
     apt-get update -q && \
-    apt-get install -yq google-cloud-sdk google-cloud-sdk-gke-gcloud-auth-plugin
+    apt-get install -yq google-cloud-sdk
 
 # Install Azure CLI
 RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/microsoft.gpg && \
@@ -58,6 +41,26 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     unzip awscliv2.zip && \
     sudo ./aws/install && \
     rm awscliv2.zip
+
+# Install Carvel
+RUN curl -L https://carvel.dev/install.sh | bash
+
+# Install kubectl and alias it to k
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    chmod +x kubectl && \
+    mv kubectl /usr/local/bin/kubectl && \
+    echo 'alias k="kubectl"' >> /etc/bash.bashrc
+
+# Install PivNet CLI using the specified version
+RUN curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNET_VERSION}/pivnet-linux-amd64-${PIVNET_VERSION} && \
+    chmod +x pivnet-linux-amd64-${PIVNET_VERSION} && \
+    mv pivnet-linux-amd64-${PIVNET_VERSION} /usr/local/bin/pivnet
+
+# Install Teller Secrets Manager from a specific GitHub release
+RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller-linux-amd64.tar.gz -o teller-linux-amd64.tar.gz && \
+    tar -xzvf teller-linux-amd64.tar.gz && \
+    mv teller /usr/local/bin/teller && \
+    rm teller-linux-amd64.tar.gz
 
 # Clean up
 RUN apt-get clean && \
