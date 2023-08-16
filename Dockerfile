@@ -58,9 +58,9 @@ RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERS
     rm teller-linux-amd64.tar.gz
 
 # CUE version
-ARG CUE_VERSION=0.6.0
+ARG CUE_VERSION=0.6.0 
 # Install CUE language
-RUN curl -L https://github.com/cuelang/cue/releases/download/v${CUE_VERSION}/cue_${CUE_VERSION}_linux_amd64.tar.gz -o cue.tar.gz && \
+RUN curl -L https://github.com/cuelang/cue/releases/download/v${CUE_VERSION}/cue_v${CUE_VERSION}_linux_amd64.tar.gz -o cue.tar.gz && \
     tar -xzvf cue.tar.gz && \
     mv cue_${CUE_VERSION}_linux_amd64/cue /usr/local/bin/cue && \
     rm cue.tar.gz
