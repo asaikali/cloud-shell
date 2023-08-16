@@ -57,7 +57,7 @@ RUN curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNE
     mv pivnet-linux-amd64-${PIVNET_VERSION} /usr/local/bin/pivnet
 
 # Install Teller Secrets Manager from a specific GitHub release
-RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_amd64.tar.gz -o teller-linux-amd64.tar.gz && \
+RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz -o teller-linux-amd64.tar.gz && \
     tar -xzvf teller-linux-amd64.tar.gz && \
     mv teller /usr/local/bin/teller && \
     rm teller-linux-amd64.tar.gz
