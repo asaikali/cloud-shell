@@ -31,6 +31,11 @@ RUN curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNE
     chmod +x pivnet-linux-amd64-${PIVNET_VERSION} && \
     mv pivnet-linux-amd64-${PIVNET_VERSION} /usr/local/bin/pivnet
 
+# Install tanzu cli 
+RUN curl -fsSL https://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-os-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list && \
+     apt-get update -q && \
+    apt-get install -yq tanzu-cli
 
 # Install Google Cloud SDK
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | \
