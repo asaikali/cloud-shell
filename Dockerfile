@@ -17,11 +17,12 @@ RUN apt-get update -q && \
     update-ca-certificates
 
 
-# Install Teller Secrets Manager from a specific GitHub release
-RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz -o teller-linux-amd64.tar.gz && \
-    tar -xzvf teller-linux-amd64.tar.gz && \
-    mv teller /usr/local/bin/teller && \
-    rm teller-linux-amd64.tar.gz
+# Install Teller Secrets Manager from a specific GitHub release\
+RUN echo https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz
+RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz -o teller-linux-amd64.tar.gz 
+RUN   tar -xzvf teller-linux-amd64.tar.gz
+RUN    mv teller /usr/local/bin/teller
+RUN    rm teller-linux-amd64.tar.gz
 
 
 # Clean up
