@@ -19,7 +19,7 @@ RUN apt-get update -q && \
 
 # Install Teller Secrets Manager from a specific GitHub release\
 RUN echo https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz
-RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz -o teller-linux-amd64.tar.gz 
+RUN curl -v -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz -o teller-linux-amd64.tar.gz 
 RUN ls -lah
 RUN   tar -xzvf teller-linux-amd64.tar.gz
 RUN    mv teller /usr/local/bin/teller
