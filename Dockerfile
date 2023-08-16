@@ -42,24 +42,21 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
     mv kubectl /usr/local/bin/kubectl && \
     echo 'alias k="kubectl"' >> /etc/bash.bashrc
 
-# PivNet CLI version
-ARG PIVNET_VERSION=3.0.0
 # Install PivNet CLI using the specified version
+ARG PIVNET_VERSION=3.0.0
 RUN curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNET_VERSION}/pivnet-linux-amd64-${PIVNET_VERSION} && \
     chmod +x pivnet-linux-amd64-${PIVNET_VERSION} && \
     mv pivnet-linux-amd64-${PIVNET_VERSION} /usr/local/bin/pivnet
 
-# Teller version
+# Install Teller Secrets Manager 
 ARG TELLER_VERSION=1.5.6
-# Install Teller Secrets Manager from a specific GitHub release
 RUN curl -L https://github.com/tellerops/teller/releases/download/v${TELLER_VERSION}/teller_${TELLER_VERSION}_Linux_x86_64.tar.gz -o teller-linux-amd64.tar.gz && \
     tar -xzvf teller-linux-amd64.tar.gz && \
     mv teller /usr/local/bin/teller && \
     rm teller-linux-amd64.tar.gz
 
-# CUE version
-ARG CUE_VERSION=0.6.0 
 # Install CUE language
+ARG CUE_VERSION=0.6.0 
 RUN curl -L https://github.com/cue-lang/cue/releases/download/v${CUE_VERSION}/cue_v${CUE_VERSION}_linux_amd64.tar.gz -o cue.tar.gz && \
     mkdir cue && \
     tar -xzvf cue.tar.gz -C cue && \
