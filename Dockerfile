@@ -64,6 +64,14 @@ RUN curl -L https://github.com/cue-lang/cue/releases/download/v${CUE_VERSION}/cu
     rm cue.tar.gz && \
     rm -rf cue
 
+
+# Install k9s with specific version
+ARG K9S_VERSION=0.27.4
+RUN curl -LO https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_amd64.tar.gz && \
+    tar -xzvf k9s_Linux_amd64.tar.gz && \
+    mv k9s /usr/local/bin/ && \
+    rm k9s_Linux_amd64.tar.gz
+    
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
