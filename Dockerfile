@@ -82,16 +82,16 @@ RUN mkdir -p ~/.kube/plugins && \
 
 # Install kubens 
 ARG KUBENS_VERSION=0.9.5
-RUN curl -LO https://github.com/ahmetb/kubectx/releases/download/v${KUBENS_VERSION}/kubens_v${KUBENS_VERSION}_linux_x86_64.tar.gz -o kubens.tar.gz && \
+RUN curl -L https://github.com/ahmetb/kubectx/releases/download/v${KUBENS_VERSION}/kubens_v${KUBENS_VERSION}_linux_x86_64.tar.gz -o kubens.tar.gz && \
     tar -xzvf kubens.tar.gz && \
-    mv kubens ~/.kube/plugins/ && \
+    mv kubens /usr/local/bin/ && \
     rm kubens.tar.gz
 
 # Install kubectx
 ARG KUBECTX_VERSION=0.9.5
-RUN curl -LO https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubectx_v${KUBECTX_VERSION}_linux_x86_64.tar.gz -o kubectx.tar.gz && \
+RUN curl -L https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubectx_v${KUBECTX_VERSION}_linux_x86_64.tar.gz -o kubectx.tar.gz && \
     tar -xzvf kubectx.tar.gz && \
-    mv kubectx ~/.kube/plugins/ && \
+    mv kubectx /usr/local/bin/ && \
     rm kubectx.tar.gz
 
 # Clean up
