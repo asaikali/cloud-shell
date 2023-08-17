@@ -94,6 +94,10 @@ RUN curl -L https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSI
     mv kubectx /usr/local/bin/ && \
     rm kubectx.tar.gz
 
+# Install bash-it
+RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
+    ~/.bash_it/install.sh --silent
+    
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
