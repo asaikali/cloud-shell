@@ -80,6 +80,20 @@ RUN mkdir -p ~/.kube/plugins && \
     mv kubectl-tree ~/.kube/plugins/kubectl-tree && \
     rm kubectl-tree.tar.gz
 
+# Install kubens 
+ARG KUBENS_VERSION=0.9.5
+RUN curl -LO https://github.com/ahmetb/kubectx/releases/download/v${KUBENS_VERSION}/kubens_v${KUBENS_VERSION}_linux_x86_64.tar.gz -o kubens.tar.gz && \
+    tar -xzvf kubens.tar.gz && \
+    mv kubens ~/.kube/plugins/ && \
+    rm kubens.tar.gz
+
+# Install kubectx
+ARG KUBECTX_VERSION=0.9.5
+RUN curl -LO https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubectx_v${KUBECTX_VERSION}_linux_x86_64.tar.gz -o kubectx.tar.gz && \
+    tar -xzvf kubectx.tar.gz && \
+    mv kubectx ~/.kube/plugins/ && \
+    rm kubectx.tar.gz
+
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
