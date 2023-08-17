@@ -74,10 +74,9 @@ RUN curl -LO https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k
 
 # Install kubectl-tree plugin
 ARG KUBECTL_TREE_VERSION=0.4.3
-RUN mkdir -p ~/.kube/plugins && \
-    curl -L https://github.com/ahmetb/kubectl-tree/releases/download/v${KUBECTL_TREE_VERSION}/kubectl-tree_v${KUBECTL_TREE_VERSION}_linux_amd64.tar.gz -o kubectl-tree.tar.gz && \
+RUN curl -L https://github.com/ahmetb/kubectl-tree/releases/download/v${KUBECTL_TREE_VERSION}/kubectl-tree_v${KUBECTL_TREE_VERSION}_linux_amd64.tar.gz -o kubectl-tree.tar.gz && \
     tar -xzvf kubectl-tree.tar.gz && \
-    mv kubectl-tree ~/.kube/plugins/kubectl-tree && \
+    mv kubectl-tree /usr/local/bin/  && \
     rm kubectl-tree.tar.gz
 
 # Install kubens 
@@ -97,7 +96,7 @@ RUN curl -L https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSI
 # Install bash-it
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     ~/.bash_it/install.sh --silent
-    
+
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
