@@ -65,7 +65,7 @@ RUN curl -L https://github.com/cue-lang/cue/releases/download/v${CUE_VERSION}/cu
     rm -rf cue
 
 
-# Install k9s with specific version
+# Install k9s 
 ARG K9S_VERSION=0.27.4
 RUN curl -LO https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_amd64.tar.gz && \
     tar -xzvf k9s_Linux_amd64.tar.gz && \
@@ -75,11 +75,11 @@ RUN curl -LO https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k
 # Install kubectl-tree plugin
 ARG KUBECTL_TREE_VERSION=0.4.3
 RUN mkdir -p ~/.kube/plugins && \
-    curl -LO https://github.com/ahmetb/kubectl-tree/releases/download/v${KUBECTL_TREE_VERSION}/kubectl-tree_v${KUBECTL_TREE_VERSION}_linux_amd64.tar.gz -o kubectl-tree.tar.gz && \
+    curl -L https://github.com/ahmetb/kubectl-tree/releases/download/v${KUBECTL_TREE_VERSION}/kubectl-tree_v${KUBECTL_TREE_VERSION}_linux_amd64.tar.gz -o kubectl-tree.tar.gz && \
     tar -xzvf kubectl-tree.tar.gz && \
     mv kubectl-tree ~/.kube/plugins/kubectl-tree && \
     rm kubectl-tree.tar.gz
-    
+
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
