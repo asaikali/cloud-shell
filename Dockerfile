@@ -71,6 +71,14 @@ RUN curl -LO https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k
     tar -xzvf k9s_Linux_amd64.tar.gz && \
     mv k9s /usr/local/bin/ && \
     rm k9s_Linux_amd64.tar.gz
+
+# Install kubectl-tree plugin
+ARG KUBECTL_TREE_VERSION=0.4.3
+RUN mkdir -p ~/.kube/plugins && \
+    curl -LO https://github.com/ahmetb/kubectl-tree/releases/download/v${KUBECTL_TREE_VERSION}/kubectl-tree_v${KUBECTL_TREE_VERSION}_linux_amd64.tar.gz -o kubectl-tree.tar.gz && \
+    tar -xzvf kubectl-tree.tar.gz && \
+    mv kubectl-tree ~/.kube/plugins/kubectl-tree && \
+    rm kubectl-tree.tar.gz
     
 # Clean up
 RUN apt-get clean && \
