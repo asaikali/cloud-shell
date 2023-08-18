@@ -38,10 +38,15 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     sudo ./aws/install && \
     rm awscliv2.zip
 
-# Install Carvel
-RUN curl -L https://carvel.dev/install.sh | bash
+# Install Carvel and command completions
+RUN curl -L https://carvel.dev/install.sh | bash && \
+    kapp completion bash > /etc/bash_completion.d/kapp && \
+    kctrl completion bash > /etc/bash_completion.d/kctrl && \
+    imgpkg completion bash > /etc/bash_completion.d/imgpkg && \
+    ytt completion bash > /etc/bash_completion.d/ytt && \
+    vendir completion bash > /etc/bash_completion.d/vendir 
 
-# Install kubectl and alias it to k
+# Install kubectl and alias it to k and activate command completion for kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/kubectl && \
