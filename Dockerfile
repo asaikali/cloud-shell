@@ -1,11 +1,16 @@
 # Use Ubuntu 22.04 (Jammy) as the base image
 FROM ubuntu:22.04
 
-# Update system and install common utilities
+# Install common utilities and update ca-certificates
 RUN apt-get update -q && \
-    apt-get install -yq curl apt-transport-https ca-certificates gnupg unzip git jq sudo lsb-release \
+    apt-get install -yq locales curl apt-transport-https ca-certificates gnupg unzip git jq sudo lsb-release \
     python3 python3-pip && \
     update-ca-certificates
+
+# Set the locale to en_US.UTF-8
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen && \
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 # Install direnv
 RUN apt-get install -yq direnv && \
@@ -40,7 +45,8 @@ RUN curl -L https://carvel.dev/install.sh | bash
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/kubectl && \
-    echo 'alias k="kubectl"' >> /etc/bash.bashrc
+    echo 'alias k="kubectl"' >> /etc/bash.bashrc && \
+    echo 'source <(kubectl completion bash)' >> /etc/bash.bashrc
 
 # Install PivNet CLI using the specified version
 ARG PIVNET_VERSION=3.0.0
@@ -96,6 +102,14 @@ RUN curl -L https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSI
 # Install bash-it
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     ~/.bash_it/install.sh --silent
+
+# # Configure color variables and bash prompt in /etc/bash.bashrc
+# RUN echo 'GREEN="\e[1;32m"' >> /etc/bash.bashrc && \
+#     echo 'BLUE="\e[1;34m"' >> /etc/bash.bashrc && \
+#     echo 'YELLOW="\e[1;33m"' >> /etc/bash.bashrc && \
+#     echo 'RESET="\e[0m"' >> /etc/bash.bashrc && \
+#     echo 'PS1="\[$GREEN\]\u@\h\[$RESET\]:\[$BLUE\]\w\[$RESET\]\$(kubectl config current-context 2>/dev/null | awk \'{print \":\[$YELLOW\]\"\$1\[$RESET\]\"}\')\$ "' >> /etc/bash.bashrc
+
 
 # Clean up
 RUN apt-get clean && \
