@@ -70,7 +70,6 @@ RUN curl -L https://github.com/cue-lang/cue/releases/download/v${CUE_VERSION}/cu
     rm cue.tar.gz && \
     rm -rf cue
 
-
 # Install k9s 
 ARG K9S_VERSION=0.27.4
 RUN curl -LO https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_amd64.tar.gz && \
@@ -102,14 +101,6 @@ RUN curl -L https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSI
 # Install bash-it
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     ~/.bash_it/install.sh --silent
-
-# # Configure color variables and bash prompt in /etc/bash.bashrc
-# RUN echo 'GREEN="\e[1;32m"' >> /etc/bash.bashrc && \
-#     echo 'BLUE="\e[1;34m"' >> /etc/bash.bashrc && \
-#     echo 'YELLOW="\e[1;33m"' >> /etc/bash.bashrc && \
-#     echo 'RESET="\e[0m"' >> /etc/bash.bashrc && \
-#     echo 'PS1="\[$GREEN\]\u@\h\[$RESET\]:\[$BLUE\]\w\[$RESET\]\$(kubectl config current-context 2>/dev/null | awk \'{print \":\[$YELLOW\]\"\$1\[$RESET\]\"}\')\$ "' >> /etc/bash.bashrc
-
 
 # Clean up
 RUN apt-get clean && \
