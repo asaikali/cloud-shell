@@ -3,8 +3,19 @@ FROM ubuntu:22.04
 
 # Install common utilities and update ca-certificates
 RUN apt-get update -q && \
-    apt-get install -yq locales curl apt-transport-https ca-certificates gnupg unzip git jq sudo lsb-release \
-    python3 python3-pip && \
+    apt-get install -yq \
+      locales \
+      curl \
+      apt-transport-https \
+      ca-certificates \
+      gnupg \
+      unzip  \
+      git \
+      jq \
+      sudo \
+      lsb-release \
+      bash-completion \
+      python3 python3-pip && \
     update-ca-certificates
 
 # Set the locale to en_US.UTF-8
