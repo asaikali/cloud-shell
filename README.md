@@ -33,6 +33,7 @@ Tanzu Application Platform.
 
 ### Tanzu
 - **[PivNet CLI](https://github.com/pivotal-cf/pivnet-cli)**: Command-line tool for interacting with Pivotal Network (PivNet).
+- **[Tanzu CLI](https://github.com/vmware-tanzu/tanzu-cli)**: Command-line tools for Tanzu products
 
 ## Using GitHub Codespaces Development Container
 
